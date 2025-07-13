@@ -24,15 +24,18 @@ jobs:
 
       - name: Merge upstream into local branch (with --no-ff)
         run: |
-          # 合并 upstream 的目标分支（例如 master 或 dev，根据需要修改）
-          git merge upstream/master --no-ff -m "Merge upstream/master into dashboard"
+          git merge upstream/master --no-ff --allow-unrelated-histories -m "Merge upstream/master into dashboard"
         # 如果合并失败（有冲突），可以尝试变基
         continue-on-error: true  # 允许合并失败后继续执行变基步骤
 
       - name: Resolve conflicts with rebase (如果合并失败)
         run: |
-          git rebase upstream/master  # 用变基解决冲突
-        # 如果变基也失败，可能需要手动解决冲突，这里可以根据需求调整
+          git rebase upstream/master
+        continue-on-error: true
+
+      - name: Resolve conflicts with theirs strategy
+        run: |
+          git merge -s ours upstream/master -m "Merge upstream with theirs strategy"
         continue-on-error: true
 
       - name: Push changes to origin
