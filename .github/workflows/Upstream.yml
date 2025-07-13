@@ -2,7 +2,7 @@ name: Merge Upstream AI
 
 on:
   schedule:
-    - cron: '0 0/8 * * *'
+    #- cron: '0 0/8 * * *'
   workflow_dispatch:  # 允许手动触发
 
 jobs:
