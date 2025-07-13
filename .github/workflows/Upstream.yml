@@ -27,6 +27,11 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "GitHub Actions Bot"
 
+      - name: Abort previous conflicting operations  # 新增：清理冲突状态
+        run: |
+          git merge --abort || true
+          git rebase --abort || true
+
       - name: Merge upstream into local branch (with --no-ff)
         run: |
           git merge upstream/master --no-ff --allow-unrelated-histories -m "Merge upstream/master into dashboard"
@@ -48,4 +53,3 @@ jobs:
           git push origin dashboard
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
